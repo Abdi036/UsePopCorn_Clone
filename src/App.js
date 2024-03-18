@@ -1,4 +1,6 @@
-/*const tempMovieData = [
+import { useState } from "react";
+
+const tempMovieData = [
   {
     imdbID: "tt1375666",
     Title: "Inception",
@@ -20,9 +22,9 @@
     Poster:
       "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
   },
-];*/
+];
 
-/*const tempWatchedData = [
+const tempWatchedData = [
   {
     imdbID: "tt1375666",
     Title: "Inception",
@@ -43,12 +45,16 @@
     imdbRating: 8.5,
     userRating: 9,
   },
-];*/
+];
 
 export default function App() {
+  const [watchedMovies, setWatchedMovies] = useState(tempWatchedData);
+  const [movies, setMovies] = useState(tempMovieData);
+
   return (
     <>
       <Navbar />
+      <MainContainer movies={movies} watchedMovies={watchedMovies} />
     </>
   );
 }
@@ -84,6 +90,84 @@ function MovieQuantity() {
       <p className="movieNum">
         Found <strong>X</strong> Movies
       </p>
+    </div>
+  );
+}
+
+function MainContainer({ movies, watchedMovies }) {
+  return (
+    <main className="main_conatiner">
+      <Box>
+        <MovieLists movies={movies} />
+      </Box>
+      <Box>
+        <Moviesummary />
+        <WatchedMovies watchedMovies={watchedMovies} />
+      </Box>
+    </main>
+  );
+}
+function Box({ children }) {
+  const [isopen, setIsopen] = useState(true);
+  return (
+    <div className="box">
+      <button className="btn-toggle" onClick={() => setIsopen((open) => !open)}>
+        {isopen ? "-" : "+"}
+      </button>
+      {isopen && children}
+    </div>
+  );
+}
+
+function MovieLists({ movies }) {
+  return (
+    <>
+      {movies.map((movie, index) => (
+        <div className="movieList" key={index}>
+          <div>
+            <img src={movie.Poster} alt={`${movie.Title} poster`} />
+          </div>
+          <div className="movie">
+            <p>{movie.Title}</p>
+            <span>📅 {movie.Year}</span>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+function WatchedMovies({ watchedMovies }) {
+  return (
+    <>
+      {watchedMovies.map((movie, index) => (
+        <div className="movieList" key={index}>
+          <div>
+            <img src={movie.Poster} alt={`${movie.Title} poster`} />
+          </div>
+          <div className="movie">
+            <p>{movie.Title}</p>
+            <div>
+              <span>⭐{movie.imdbRating}</span>
+              <span>🌟{movie.userRating}</span>
+              <span>⏳{movie.runtime}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function Moviesummary() {
+  return (
+    <div className="watched_summary">
+      <h3>MOVIES YOU WATCHED</h3>
+      <div>
+        <span>#️⃣ 2 Movies</span>
+        <span>⭐8.5</span>
+        <span>🌟 9.9</span>
+        <span>⏳ 120 min</span>
+      </div>
     </div>
   );
 }

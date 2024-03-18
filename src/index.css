@@ -49,8 +49,8 @@ body {
 }
 
 .logo h1 {
-  font-size: 1.5rem;
-  font-weight: 300;
+  font-size: 1.8rem;
+  font-weight: 400;
   color: var(--color-white);
 }
 
@@ -58,7 +58,7 @@ body {
   justify-self: center;
   border: none;
   padding: 1rem 1.4rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
   border-radius: 0.7rem;
   width: 35rem;
   transition: all 0.3s;
@@ -73,7 +73,80 @@ body {
   transform: translateY(-3px);
 }
 .movieNum {
-  font-size: 1.2rem;
-  font-weight: 100;
+  font-size: 1.5rem;
+  font-weight: 150;
   color: var(--color-white);
+}
+
+.main_conatiner {
+  display: flex;
+  margin-top: 1.5rem;
+  gap: 2rem;
+  justify-content: center;
+}
+.box {
+  width: 30rem;
+  max-width: 40rem;
+  min-height: auto;
+  height: 75vh;
+  background-color: var(--color-background-500);
+  border-radius: 0.9rem;
+  /* overflow: scroll; */
+  position: relative;
+}
+
+.btn-toggle {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  height: 2.4rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-background-900);
+  color: var(--color-text);
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 999;
+}
+.movieList {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.6rem 3.2rem;
+  border-bottom: 1px solid var(--color-background-100);
+}
+.movieList img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  scale: 1;
+}
+.movie p {
+  font-size: 1.5rem;
+  font-weight: 200;
+  color: var(--color-white);
+  padding: 0.5rem;
+}
+.movie div {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.watched_summary {
+  padding: 1.5rem 2rem;
+  background-color: var(--color-background-100);
+  border-radius: 0.9rem;
+}
+.watched_summary h3 {
+  font-size: 1.5rem;
+  color: var(--color-white);
+  font-weight: 200;
+  padding: 0.5rem 0;
+}
+.watched_summary div {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
