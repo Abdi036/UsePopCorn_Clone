@@ -54,7 +54,15 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <MainContainer movies={movies} watchedMovies={watchedMovies} />
+      <MainContainer>
+        <Box>
+          <MovieLists movies={movies} />
+        </Box>
+        <Box>
+          <Moviesummary />
+          <WatchedMovies watchedMovies={watchedMovies} />
+        </Box>
+      </MainContainer>
     </>
   );
 }
@@ -94,18 +102,8 @@ function MovieQuantity() {
   );
 }
 
-function MainContainer({ movies, watchedMovies }) {
-  return (
-    <main className="main_conatiner">
-      <Box>
-        <MovieLists movies={movies} />
-      </Box>
-      <Box>
-        <Moviesummary />
-        <WatchedMovies watchedMovies={watchedMovies} />
-      </Box>
-    </main>
-  );
+function MainContainer({ children }) {
+  return <main className="main_conatiner">{children}</main>;
 }
 function Box({ children }) {
   const [isopen, setIsopen] = useState(true);
