@@ -53,7 +53,11 @@ export default function App() {
 
   return (
     <>
-      <Navbar />
+      <Navbar>
+        <Logo />
+        <Search />
+        <MovieQuantity movies={movies} />
+      </Navbar>
       <MainContainer>
         <Box>
           <MovieLists movies={movies} />
@@ -67,14 +71,8 @@ export default function App() {
   );
 }
 
-function Navbar() {
-  return (
-    <nav className="navbar">
-      <Logo />
-      <Search />
-      <MovieQuantity />
-    </nav>
-  );
+function Navbar({ children }) {
+  return <nav className="navbar">{children}</nav>;
 }
 
 function Logo() {
@@ -92,11 +90,11 @@ function Search() {
     </div>
   );
 }
-function MovieQuantity() {
+function MovieQuantity({ movies }) {
   return (
     <div>
       <p className="movieNum">
-        Found <strong>X</strong> Movies
+        Found <strong>{movies.length}</strong> Movies
       </p>
     </div>
   );
