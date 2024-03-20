@@ -9,6 +9,7 @@
   --color-red: #fa5252;
   --color-red-dark: #e03131;
   --color-white: #fff;
+  --Hover-color: #f0d7d751;
 }
 
 html {
@@ -103,10 +104,6 @@ body {
   padding: 4rem;
   margin-top: 5rem;
 }
-/* .loader_container p {
-  font-size: 1.5rem;
-  font-weight: 300;
-} */
 
 .loader {
   width: 50px;
@@ -125,6 +122,22 @@ body {
   to {
     transform: rotate(1turn);
   }
+}
+
+.btn_container {
+  position: relative;
+  padding: 4rem;
+  text-align: center;
+}
+.close_btn {
+  padding: 1rem;
+  border: none;
+  border-radius: 10rem;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  z-index: 10;
+  cursor: pointer;
 }
 
 .btn-toggle {
@@ -148,6 +161,10 @@ body {
   gap: 2rem;
   padding: 1.6rem 3.2rem;
   border-bottom: 1px solid var(--color-background-100);
+}
+.movieList:hover {
+  cursor: pointer;
+  background-color: var(--Hover-color);
 }
 .movieList img {
   width: 50px;
