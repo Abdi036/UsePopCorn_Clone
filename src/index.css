@@ -124,18 +124,32 @@ body {
   }
 }
 
-.btn_container {
-  position: relative;
-  padding: 4rem;
-  text-align: center;
+.close_btn_container {
+  background-color: var(--color-background-100);
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  border-top-right-radius: 0.9rem;
+  border-top-left-radius: 0.9rem;
+}
+.close_btn_container img {
+  height: 250px;
+  border-top-left-radius: 0.9rem;
+}
+
+.movie_description h2,
+.movie_description p {
+  padding: 0.5rem;
 }
 .close_btn {
   padding: 1rem;
   border: none;
   border-radius: 10rem;
   position: absolute;
-  top: 10%;
-  left: 10%;
+  top: 1%;
+  left: 2%;
   z-index: 10;
   cursor: pointer;
 }
@@ -154,6 +168,16 @@ body {
   font-weight: bold;
   cursor: pointer;
   z-index: 999;
+}
+
+.rate_container {
+  margin: 2rem 3rem;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--Hover-color);
+  border-radius: 15px;
 }
 .movieList {
   display: flex;
