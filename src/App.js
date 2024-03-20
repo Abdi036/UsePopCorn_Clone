@@ -49,9 +49,8 @@ import { useEffect, useState } from "react";
 // ];
 
 const key = "fd9ff071";
-const movie = "nnllk";
-
 export default function App() {
+  const [query, setQuery] = useState("");
   const [watchedMovies, setWatchedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [isfetching, setIsFetching] = useState(false);
@@ -62,8 +61,9 @@ export default function App() {
       async function fetchMovie() {
         try {
           setIsFetching(true);
+          setError("");
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${key}&s=${movie}`
+            `http://www.omdbapi.com/?apikey=${key}&s=${query}`
           );
           if (!res.ok) {
             throw new Error("Something Went Wrong Try Agin.");
@@ -79,16 +79,23 @@ export default function App() {
           setIsFetching(false);
         }
       }
+
+      if (!query || query.length < 2) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+
       fetchMovie();
     },
-    [error.message]
+    [query]
   );
 
   return (
     <>
       <Navbar>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <MovieQuantity movies={movies} />
       </Navbar>
       <MainContainer>
@@ -134,10 +141,16 @@ function Logo() {
     </div>
   );
 }
-function Search() {
+function Search({ query, setQuery }) {
   return (
     <div>
-      <input className="search" type="text" placeholder="Search movies..." />
+      <input
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="search"
+        type="text"
+        placeholder="Search movies..."
+      />
     </div>
   );
 }
