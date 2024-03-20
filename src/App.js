@@ -1,4 +1,5 @@
-import { useState } from "react";
+//  http://www.omdbapi.com/?i=tt3896198&apikey={key}
+import { useEffect, useState } from "react";
 
 const tempMovieData = [
   {
@@ -47,9 +48,26 @@ const tempWatchedData = [
   },
 ];
 
+const key = "fd9ff071";
+const movie = "The Avengers";
+
 export default function App() {
-  const [watchedMovies, setWatchedMovies] = useState(tempWatchedData);
-  const [movies, setMovies] = useState(tempMovieData);
+  const [watchedMovies, setWatchedMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [isfetching, setIsFetching] = useState(false);
+
+  useEffect(function movieData() {
+    async function fetchMovie() {
+      setIsFetching(true);
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${key}&s=${movie}`
+      );
+      const data = await res.json();
+      setMovies(data.Search);
+      setIsFetching(false);
+    }
+    fetchMovie();
+  }, []);
 
   return (
     <>
@@ -59,15 +77,21 @@ export default function App() {
         <MovieQuantity movies={movies} />
       </Navbar>
       <MainContainer>
-        <Box>
-          <MovieLists movies={movies} />
-        </Box>
+        <Box>{isfetching ? <Loader /> : <MovieLists movies={movies} />}</Box>
         <Box>
           <Moviesummary />
           <WatchedMovies watchedMovies={watchedMovies} />
         </Box>
       </MainContainer>
     </>
+  );
+}
+
+function Loader() {
+  return (
+    <div className="loader_container">
+      <div className="loader"></div>
+    </div>
   );
 }
 
