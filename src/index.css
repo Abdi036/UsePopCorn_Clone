@@ -94,7 +94,8 @@ body {
   position: relative;
 }
 
-.loader_container {
+.loader_container,
+.errorContainer {
   display: flex;
   justify-content: center;
   align-items: center;
