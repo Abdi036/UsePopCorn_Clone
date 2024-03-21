@@ -31,14 +31,18 @@ export default function App() {
       watchedMovie.filter((movie) => movie.imdbID !== id)
     );
   }
+
   useEffect(
     function movieData() {
+      const controller = new AbortController();
+
       async function fetchMovie() {
         try {
           setIsFetching(true);
           setError("");
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${key}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${key}&s=${query}`,
+            { signal: controller.signal }
           );
           if (!res.ok) {
             throw new Error("Something Went Wrong Try Agin.");
@@ -47,9 +51,12 @@ export default function App() {
           const data = await res.json();
           if (data.Response === "False") throw new Error("Movie Not Found!");
           setMovies(data.Search);
+          setError("");
         } catch (err) {
           console.error(err.message);
-          setError(err.message);
+          if (err.name !== "AbortError") {
+            setError(err.message);
+          }
         } finally {
           setIsFetching(false);
         }
@@ -62,6 +69,10 @@ export default function App() {
       }
 
       fetchMovie();
+
+      return function () {
+        controller.abort();
+      };
     },
     [query]
   );
@@ -276,6 +287,10 @@ function MovieDetails({
     function () {
       if (!title) return;
       document.title = `Movie | ${title}`;
+
+      return function () {
+        document.title = "usePopCorn";
+      };
     },
     [title]
   );
