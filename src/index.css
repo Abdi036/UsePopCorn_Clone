@@ -154,6 +154,14 @@ body {
   cursor: pointer;
 }
 
+.description {
+  margin: 2rem 3rem;
+}
+.description p,
+.description h3 {
+  padding: 1rem;
+}
+
 .btn-toggle {
   position: absolute;
   top: 0.8rem;

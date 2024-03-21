@@ -6,13 +6,21 @@ const key = "fd9ff071";
 export default function App() {
   const [selectedId, setSelectedId] = useState(null);
   const [query, setQuery] = useState("");
-  const [watchedMovies, setWatchedMovies] = useState([]);
+  const [watchedMovie, setWatchedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [isfetching, setIsFetching] = useState(false);
   const [error, setError] = useState("");
 
+  function handleBack() {
+    setSelectedId(null);
+  }
+
   function handleSelectedId(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
+  }
+
+  function handleWatchedMovies(movie) {
+    setWatchedMovies((watched) => [...watched, movie]);
   }
 
   useEffect(
@@ -31,7 +39,6 @@ export default function App() {
           const data = await res.json();
           if (data.Response === "False") throw new Error("Movie Not Found!");
           setMovies(data.Search);
-          console.log(data.Search);
         } catch (err) {
           console.error(err.message);
           setError(err.message);
@@ -73,13 +80,18 @@ export default function App() {
         <Box>
           {selectedId ? (
             <MovieDetails
+              onhandleBack={handleBack}
+              OnhandleWatchedMovies={handleWatchedMovies}
               selectedId={selectedId}
               setSelectedId={setSelectedId}
             />
           ) : (
             <>
               <Moviesummary />
-              <WatchedMovies watchedMovies={watchedMovies} />
+              <WatchedMovies
+                watchedMovie={watchedMovie}
+                OnhandleWatchedMovies={handleWatchedMovies}
+              />
             </>
           )}
         </Box>
@@ -175,16 +187,16 @@ function MovieLists({ movies, OnhandleSelectedID }) {
     </>
   );
 }
-function WatchedMovies({ watchedMovies }) {
+function WatchedMovies({ watchedMovie }) {
   return (
     <>
-      {watchedMovies.map((movie, index) => (
+      {watchedMovie.map((movie, index) => (
         <div className="movieList" key={index}>
           <div>
-            <img src={movie.Poster} alt={`${movie.Title} poster`} />
+            <img src={movie.poster} alt={`${movie.Title} poster`} />
           </div>
           <div className="movie">
-            <p>{movie.Title}</p>
+            <p>{movie.title}</p>
             <div>
               <span>⭐{movie.imdbRating}</span>
               <span>🌟{movie.userRating}</span>
@@ -211,15 +223,15 @@ function Moviesummary() {
   );
 }
 
-function MovieDetails({ selectedId, setSelectedId }) {
+function MovieDetails({ selectedId, onhandleBack, OnhandleWatchedMovies }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     Title: title,
-    Year: year,
     Poster: poster,
     Runtime: runtime,
+    Year: year,
     imdbRating,
     Plot: plot,
     Released: released,
@@ -227,6 +239,19 @@ function MovieDetails({ selectedId, setSelectedId }) {
     Director: director,
     Genre: genre,
   } = movie;
+
+  function handleAddMovie() {
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ")[0]),
+    };
+    OnhandleWatchedMovies(newWatchedMovie);
+    onhandleBack(null);
+  }
 
   useEffect(
     function movieInfoWrap() {
@@ -250,7 +275,7 @@ function MovieDetails({ selectedId, setSelectedId }) {
       ) : (
         <>
           <div className="close_btn_container">
-            <button className="close_btn" onClick={() => setSelectedId(null)}>
+            <button className="close_btn" onClick={onhandleBack}>
               &larr;
             </button>
             <div>
@@ -259,7 +284,7 @@ function MovieDetails({ selectedId, setSelectedId }) {
             <div className="movie_description">
               <h2>{title}</h2>
               <p>
-                {released}.{runtime}
+                {released}&bull;{runtime}
               </p>
               <p>{genre}</p>
               <p>
@@ -271,6 +296,12 @@ function MovieDetails({ selectedId, setSelectedId }) {
 
           <div className="rate_container">
             <RatingStar size={24} maxRating={10} />
+            <button onClick={handleAddMovie}>+ Add Movie</button>
+          </div>
+          <div className="description">
+            <p>{plot}</p>
+            <h3>{actors}</h3>
+            <h3>Directed By:{director}</h3>
           </div>
         </>
       )}
