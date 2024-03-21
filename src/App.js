@@ -8,7 +8,7 @@ const average = (arr) => arr.reduce((acc, cur) => acc + cur, 0) / arr.length;
 
 export default function App() {
   const [selectedId, setSelectedId] = useState(null);
-  const [query, setQuery] = useState("Thor");
+  const [query, setQuery] = useState("");
   const [watchedMovie, setWatchedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [isfetching, setIsFetching] = useState(false);
@@ -65,6 +65,7 @@ export default function App() {
       if (!query || query.length < 2) {
         setMovies([]);
         setError("");
+        handleBack();
         return;
       }
 
