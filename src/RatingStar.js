@@ -15,6 +15,7 @@ export default function RatingStar({
   maxRating = 5,
   color = "#fcc419",
   size = 48,
+  onSetRating,
 }) {
   const textStyle = {
     lineHight: "1",
@@ -27,6 +28,7 @@ export default function RatingStar({
 
   function handleRating(rating) {
     setRating(rating);
+    onSetRating(Number(rating));
   }
 
   return (

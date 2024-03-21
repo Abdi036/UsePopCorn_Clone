@@ -181,9 +181,8 @@ body {
 .rate_container {
   margin: 2rem 3rem;
   padding: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  text-align: center;
   background-color: var(--Hover-color);
   border-radius: 15px;
 }
@@ -230,4 +229,19 @@ body {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+}
+
+.rate_container button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #6fabeb;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.rate_container button:hover {
+  background-color: #0056b3;
 }

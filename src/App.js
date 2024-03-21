@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import RatingStar from "./RatingStar";
 
 const key = "fd9ff071";
+
+const average = (arr) => arr.reduce((acc, cur) => acc + cur, 0) / arr.length;
+
 export default function App() {
   const [selectedId, setSelectedId] = useState(null);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("Thor");
   const [watchedMovie, setWatchedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [isfetching, setIsFetching] = useState(false);
@@ -84,10 +87,11 @@ export default function App() {
               OnhandleWatchedMovies={handleWatchedMovies}
               selectedId={selectedId}
               setSelectedId={setSelectedId}
+              watchedMovie={watchedMovie}
             />
           ) : (
             <>
-              <Moviesummary />
+              <Moviesummary watchedMovie={watchedMovie} />
               <WatchedMovies
                 watchedMovie={watchedMovie}
                 OnhandleWatchedMovies={handleWatchedMovies}
@@ -209,23 +213,23 @@ function WatchedMovies({ watchedMovie }) {
   );
 }
 
-function Moviesummary() {
-  return (
-    <div className="watched_summary">
-      <h3>MOVIES YOU WATCHED</h3>
-      <div>
-        <span>#️⃣ 2 Movies</span>
-        <span>⭐8.5</span>
-        <span>🌟 9.9</span>
-        <span>⏳ 120 min</span>
-      </div>
-    </div>
-  );
-}
-
-function MovieDetails({ selectedId, onhandleBack, OnhandleWatchedMovies }) {
+function MovieDetails({
+  selectedId,
+  onhandleBack,
+  OnhandleWatchedMovies,
+  watchedMovie,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState("");
+
+  const isWatched = watchedMovie
+    .map((movie) => movie.imdbID)
+    .includes(selectedId);
+
+  const userRateGiven = watchedMovie.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
 
   const {
     Title: title,
@@ -247,10 +251,11 @@ function MovieDetails({ selectedId, onhandleBack, OnhandleWatchedMovies }) {
       year,
       poster,
       imdbRating: Number(imdbRating),
-      runtime: Number(runtime.split(" ")[0]),
+      runtime: Number(runtime.split(" ").at(0)),
+      userRating,
     };
     OnhandleWatchedMovies(newWatchedMovie);
-    onhandleBack(null);
+    onhandleBack();
   }
 
   useEffect(
@@ -295,8 +300,20 @@ function MovieDetails({ selectedId, onhandleBack, OnhandleWatchedMovies }) {
           </div>
 
           <div className="rate_container">
-            <RatingStar size={24} maxRating={10} />
-            <button onClick={handleAddMovie}>+ Add Movie</button>
+            {!isWatched ? (
+              <>
+                <RatingStar
+                  size={24}
+                  maxRating={10}
+                  onSetRating={setUserRating}
+                />
+                {userRating > 0 && (
+                  <button onClick={handleAddMovie}>+ Add Movie</button>
+                )}
+              </>
+            ) : (
+              <p>you Rated this movie {userRateGiven} ⭐</p>
+            )}
           </div>
           <div className="description">
             <p>{plot}</p>
@@ -305,6 +322,29 @@ function MovieDetails({ selectedId, onhandleBack, OnhandleWatchedMovies }) {
           </div>
         </>
       )}
+    </div>
+  );
+}
+function Moviesummary({ watchedMovie }) {
+  const avgImdbRating = average(
+    watchedMovie.map((movie) => Number(movie.imdbRating))
+  );
+  const avgUserRating = average(
+    watchedMovie.map((movie) => Number(movie.userRating))
+  );
+  const avgRuntime = average(
+    watchedMovie.map((movie) => Number(movie.runtime))
+  );
+
+  return (
+    <div className="watched_summary">
+      <h3>MOVIES YOU WATCHED</h3>
+      <div>
+        <span>#️⃣ {watchedMovie.length} Movies</span>
+        <span>⭐{avgImdbRating.toFixed(2)}</span>
+        <span>🌟 {avgUserRating.toFixed(2)}</span>
+        <span>⏳ {avgRuntime} min</span>
+      </div>
     </div>
   );
 }
