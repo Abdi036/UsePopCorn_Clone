@@ -193,6 +193,10 @@ body {
   padding: 1.6rem 3.2rem;
   border-bottom: 1px solid var(--color-background-100);
 }
+.wathedMovieList {
+  display: grid;
+  grid-template-columns: 1fr 5fr 0.5fr;
+}
 .movieList:hover {
   cursor: pointer;
   background-color: var(--Hover-color);
@@ -202,6 +206,9 @@ body {
   height: 50px;
   object-fit: cover;
   scale: 1;
+}
+.movie {
+  width: 15rem;
 }
 .movie p {
   font-size: 1.5rem;
@@ -234,8 +241,8 @@ body {
 .rate_container button {
   margin-top: 10px;
   padding: 10px 20px;
-  background-color: #6fabeb;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -243,5 +250,16 @@ body {
 }
 
 .rate_container button:hover {
-  background-color: #0056b3;
+  background-color: var(--color-primary-light);
+}
+
+.deleteBtn {
+  border: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 3rem;
+  font-size: 1rem;
+  color: var(--color-background-900);
+  background-color: var(--color-red-dark);
+  cursor: pointer;
 }
